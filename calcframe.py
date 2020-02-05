@@ -2,36 +2,13 @@ from tkinter import *
 
 
 from calcbutton import CustomButton
+import config
 
 
 def key_check(test):
     """Return a string if it is a used key and convert it to what it needs to be
     """
-    switcher = {
-        "1": "1",
-        "2": "2",
-        "3": "3",
-        "4": "4",
-        "5": "5",
-        "6": "6",
-        "7": "7",
-        "8": "8",
-        "9": "9",
-        "0": "0",
-        "*": "X",
-        "x": "X",
-        "X": "X",
-        "\x08": "del",
-        "/": "/",
-        "-": "-",
-        "+": "+",
-        ".": ".",
-        "\r": "=",
-        # the last two entries are for the event.keysym check
-        "Return": "=",
-        "BackSpace": "del"
-
-    }
+    switcher = config.buttons_test_list
     return switcher.get(test)
 
 
@@ -127,7 +104,6 @@ class CalculatorFrame(Frame):
 
     def keyboard_press(self, event):
         """When a key is pressed run it through the key check to see if it is used. If it is, press press the button"""
-        print("Button pressed", event.keysym)
         if self.button["text"] == key_check(event.char):
             self.button.invoke()
             self.button["relief"] = "sunken"
