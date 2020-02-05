@@ -4,6 +4,37 @@ from tkinter import *
 from calcbutton import CustomButton
 
 
+def key_check(test):
+    """Return a string if it is a used key and convert it to what it needs to be
+    """
+    switcher = {
+        "1": "1",
+        "2": "2",
+        "3": "3",
+        "4": "4",
+        "5": "5",
+        "6": "6",
+        "7": "7",
+        "8": "8",
+        "9": "9",
+        "0": "0",
+        "*": "X",
+        "x": "X",
+        "X": "X",
+        "\x08": "del",
+        "/": "/",
+        "-": "-",
+        "+": "+",
+        ".": ".",
+        "\r": "=",
+        # the last two entries are for the event.keysym check
+        "Return": "=",
+        "BackSpace": "del"
+
+    }
+    return switcher.get(test)
+
+
 class CalculatorFrame(Frame):
 
     def __init__(self, master=None):
@@ -102,11 +133,11 @@ class CalculatorFrame(Frame):
     def keyboard_press(self, event):
         """When a key is pressed run it through the key check to see if it is used. If it is, press press the button"""
         print("Button pressed", event.keysym)
-        if self.button["text"] == self.key_check(event.char):
+        if self.button["text"] == key_check(event.char):
             self.button.invoke()
             self.button["relief"] = "sunken"
         for i in self.button_list:  # check all the buttons in the list
-            if i["text"] == self.key_check(event.char):
+            if i["text"] == key_check(event.char):
                 i["relief"] = "sunken"
                 i.invoke()
 
@@ -114,9 +145,9 @@ class CalculatorFrame(Frame):
         """When the key is released, raise the button back up. event.keysym has to be checked as the Return and
         BackSpace key don't return anything in event.char for some reason"""
         for i in self.button_list:
-            if i["text"] == self.key_check(event.keysym) or i["text"] == self.key_check(event.char):
+            if i["text"] == key_check(event.keysym) or i["text"] == key_check(event.char):
                 i["relief"] = "raised"
-            if "=" == self.key_check(event.keysym):
+            if "=" == key_check(event.keysym):
                 self.button["relief"] = "raised"
 
     def position_buttons(self):
@@ -132,32 +163,3 @@ class CalculatorFrame(Frame):
             column += 1
         self.button.grid(column=5, row=2, rowspan=4)
 
-    def key_check(self, test):
-        """Return a string if it is a used key and convert it to what it needs to be
-        """
-        switcher = {
-            "1": "1",
-            "2": "2",
-            "3": "3",
-            "4": "4",
-            "5": "5",
-            "6": "6",
-            "7": "7",
-            "8": "8",
-            "9": "9",
-            "0": "0",
-            "*": "X",
-            "x": "X",
-            "X": "X",
-            "\x08": "del",
-            "/": "/",
-            "-": "-",
-            "+": "+",
-            ".": ".",
-            "\r": "=",
-            # the last two entries are for the event.keysym check
-            "Return": "=",
-            "BackSpace": "del"
-
-        }
-        return switcher.get(test)
