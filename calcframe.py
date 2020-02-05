@@ -37,22 +37,16 @@ def key_check(test):
 
 class CalculatorFrame(Frame):
 
-    def __init__(self, master=None):
+    def __init__(self, master=None, output_frame=None):
         Frame.__init__(self, master=master)
         self.list_numbers = []
-        self.grid()
+        self.grid(row=1)
         self.button_list = []
 
         self.make_buttons_list()
         self.position_buttons()
-
+        self.output_variable = output_frame.output_variable
         self.running_equation = ""
-
-        self.output_variable = StringVar()
-        self.output = Entry(self, textvariable=self.output_variable, width=self.button["width"]*5-2, font=self.button["font"],
-                            state="disabled", disabledforeground="black", disabledbackground="white", justify="right")
-        self.output.grid(row=0, columnspan=5)
-
         self.showing_result = False
 
     def clear(self):
@@ -62,6 +56,7 @@ class CalculatorFrame(Frame):
 
     def calculate(self):
         equation = ""
+        total = 0
         for i in self.list_numbers:
             if i == "=":
                 break
